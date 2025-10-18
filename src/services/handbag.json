@@ -1,0 +1,120 @@
+[
+  {
+    "handbagId":"0iwfjChDLrnuYfB9H4O1",
+    "id": "0iwfjChDLrnuYfB9H4O1",
+    "season": "AW25",
+    "name": "Vendula Christmas Library",
+
+    "variations": {
+      "size": [
+        "Bonnie Weekender",
+        "Book Box Bag",
+        "Kate Bag",
+        "Key Charm",
+        "Stella Tote",
+        "Universal Flip Phone Case",
+        "Winged Top Handle Bag"
+      ],
+      "design": [
+        {
+          "price": "115.00",
+          "shape": "Bonnie Weekender",
+          "categories": [
+            "Accessory"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Bonnie Weekender",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k11163461_vendula_christmas_library_bonnie_weekender_front.jpg"
+          ]
+        },
+        {
+          "price": "£100.00",
+          "shape": "Book Box Bag",
+          "categories": [
+            "Handbag"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Book Box Bag",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k14063461_vendula_christmas_library_book_box_bag_front.jpg"
+          ]
+        },
+        {
+          "price": "£73.00",
+          "shape": "Kate Bag",
+          "categories": [
+            "Handbag"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Kate Bag",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/8/k80433461_vendula_christmas_library_kate_bag_front.jpg"
+          ]
+        },
+        {
+          "price": "£23.00",
+          "shape": "Key Charm",
+          "categories": [
+            "Accessory",
+            "Charm"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Key Charm",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/c/2/c24143461_vendula_christmas_library_key_charm_front.jpg"
+          ]
+        },
+        {
+          "price": "£110.00",
+          "shape": "Stella Tote",
+          "categories": [
+            "Accessory"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Stella Tote",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k14013461_vendula_christmas_library_stella_tote_front.jpg"
+          ]
+        },
+        {
+          "price": "£38.00",
+          "shape": "Universal Flip Phone Case",
+          "categories": [
+            "Accessory",
+            "Phone Case"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Universal Flip Phone Case",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/c/4/c42193461_vendula_christmas_library_universal_flip_phone_case_front.jpg"
+          ]
+        },
+        {
+          "price": "£105.00",
+          "shape": "Winged Top Handle Bag",
+          "categories": [
+            "Handbag"
+          ],
+          "favourite": false,
+          "name": "Vendula Christmas Library Winged Top Handle Bag",
+          "imageArr": [
+            "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k14023461_vendula_christmas_library_winged_top_handle_bag_front.jpg"
+          ]
+        }
+      ],
+      "color": [],
+      "theme": []
+    },
+    "imageURL": [
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k11163461_vendula_christmas_library_bonnie_weekender_front.jpg",
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k14063461_vendula_christmas_library_book_box_bag_front.jpg",
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/8/k80433461_vendula_christmas_library_kate_bag_front.jpg",
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/c/2/c24143461_vendula_christmas_library_key_charm_front.jpg",
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k14013461_vendula_christmas_library_stella_tote_front.jpg",
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/c/4/c42193461_vendula_christmas_library_universal_flip_phone_case_front.jpg",
+      "https://www.vendulalondon.com/media/catalog/product/cache/359604771e0fd1730ccffcd509b79cd0/k/1/k14023461_vendula_christmas_library_winged_top_handle_bag_front.jpg"
+    ],
+    "favourite": false
+  }
+]
