@@ -10,7 +10,7 @@ const HandbagsJsonViewer = () => {
   useEffect(() => {
     async function fetchHandbags() {
       try {
-        const snapshot = await getDocs(collection(db, "shapes"));
+        const snapshot = await getDocs(collection(db, "handbags"));
         const data = [];
 
         // Helper to check if value is Firestore document reference
