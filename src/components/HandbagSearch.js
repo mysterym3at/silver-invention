@@ -11,8 +11,12 @@ import {
   Typography,
   Button,
   Autocomplete,
+  Icon,
+  Popover,
+
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CircleIcon from '@mui/icons-material/Circle';
 import HandbagService from "../services/handbagService";
 
 const categoryOptions = [
@@ -29,12 +33,22 @@ const categoryOptions = [
   "Accessory",
 ];
 
+
+
+const gbpFormatter = new Intl.NumberFormat("en-GB", {
+  style: "currency",
+  currency: "GBP",
+  minimumFractionDigits: 2,
+});
+
+
 const HandbagSearch = () => {
   const [handbags, setHandbags] = useState([]);
   const [filteredHandbags, setFilteredHandbags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCollections, setSelectedCollections] = useState(new Set());
   const [selectedHandbags, setSelectedHandbags] = useState(new Set());
+    const [selectedShapes, setSelectedShapes] = useState(new Set());
 
   // Handbag editing state
   const [editingHandbagId, setEditingHandbagId] = useState(null);
@@ -89,11 +103,31 @@ const HandbagSearch = () => {
     fetchData();
   }, []);
 
-  const collections = React.useMemo(() => {
+  // const collections = React.useMemo(() => {
+  //   const set = new Set();
+  //   handbags.forEach((h) => {
+  //     (h.variations?.design || []).forEach((d) => {
+  //       if (d.collection) set.add(d.collection);
+  //     });
+  //   });
+  //   return Array.from(set).sort();
+  // }, [handbags]);
+
+     const collections = React.useMemo(() => {
+    const set = new Set();
+    handbags.forEach((h) => {
+     
+        if (h.series) set.add(h.series);
+     
+    });
+    return Array.from(set).sort();
+  }, [handbags]);
+
+    const shapes = React.useMemo(() => {
     const set = new Set();
     handbags.forEach((h) => {
       (h.variations?.design || []).forEach((d) => {
-        if (d.collection) set.add(d.collection);
+        if (d.shape) set.add(d.shape);
       });
     });
     return Array.from(set).sort();
@@ -248,6 +282,16 @@ const HandbagSearch = () => {
     });
   };
 
+    const toggleShape = (shape) => {
+    setSelectedShapes((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(shape)) newSet.delete(shape);
+      else newSet.add(shape);
+      return newSet;
+    });
+  };
+
+
   useEffect(() => {
     const term = searchTerm.trim().toLowerCase();
 
@@ -268,12 +312,14 @@ const HandbagSearch = () => {
             (c) => c && c.toLowerCase().includes(term)
           );
 
-          const collectionMatch =
-            selectedCollections.size === 0 ||
-            (d.collection && selectedCollections.has(d.collection));
+          const collectionMatch = selectedCollections.size === 0 ||(d.collection && selectedCollections.has(d.collection));
 
-          return (nameMatch || catMatch) && collectionMatch;
+            const shapeMatch = selectedShapes.size === 0 ||(d.shape && selectedShapes.has(d.shape));
+
+          return (nameMatch || catMatch) && (collectionMatch || shapeMatch);
         });
+
+        
 
         if (filteredDesigns.length > 0) {
           return { ...h, variations: { ...h.variations, design: filteredDesigns } };
@@ -293,7 +339,7 @@ const HandbagSearch = () => {
     });
 
     setFilteredHandbags(finalFiltered);
-  }, [searchTerm, handbags, selectedCollections, selectedHandbags]);
+  }, [searchTerm, handbags, selectedCollections, selectedShapes, selectedHandbags]);
 
   const handbagsBySeason = React.useMemo(() => {
     const group = {};
@@ -331,11 +377,13 @@ const HandbagSearch = () => {
             sx={{ marginBottom: 1 }}
             onClick={() => {
               setSelectedCollections(new Set());
+               setSelectedShapes(new Set());
               setSelectedHandbags(new Set());
             }}
           >
             Clear Filters
           </Button>
+
 
           {/* <h3>Filter by Collection</h3>
           <FormGroup>
@@ -353,6 +401,8 @@ const HandbagSearch = () => {
               />
             ))}
           </FormGroup> */}
+
+          
 
           <h3>Handbags by Season</h3>
           {Object.entries(handbagsBySeason).map(([season, handbagsInSeason]) => (
@@ -525,9 +575,15 @@ const HandbagSearch = () => {
                     </Box>
                   </>
                 ) : (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ padding: 1,display: "flex", alignItems: "center", backgroundColor:"#d96459"}}>
                     <Typography sx={{ flexGrow: 1, fontWeight: "bold" }}>
-                      {handbag.name}
+                    <h5> {handbag.name}</h5>  
+                    </Typography>
+                      <Typography sx={{ flexGrow: 1}}>
+                 {handbag.season || ""} 
+                    </Typography>
+                        <Typography sx={{ flexGrow: 1 }}>
+                 {handbag.releaseDate || ""} 
                     </Typography>
                     <Button
                       size="small"
@@ -657,10 +713,58 @@ const HandbagSearch = () => {
                       </>
                     ) : (
                       <>
-                        <Typography sx={{ flexGrow: 1 }}>
-                          <strong>{design.name}</strong> - Collection: {design.collection}
-                        </Typography>
+<Box sx={{  display: "flex", flexDirection:"row", justifyContent:"space-between" }}>
+<Typography sx={{ flexGrow: 1,paddingLeft: 2, }}>
+{/* * 1 image version * */}
+{Array.isArray(design.imageUrls) && design.imageUrls.length > 0 && (
+  <Box component="span" sx={{ ml: 1, display: "flex", alignItems: "center" }}>
+    <img
+      src={design.imageUrls[0]}
+      alt={`${design.name} image 1`}
+      style={{
+        // maxHeight: "100px",
+        width: "100px",
+        objectFit: "contain",
+        borderRadius: "0px",
+        border: "0",
+      }}
+    />
+  </Box>
+)}
 
+</Typography>
+
+                       <Typography sx={{ flexGrow: 1,paddingLeft: 2, }}>
+                          <strong>{design.name}</strong> |  {" "} 
+                  {gbpFormatter.format(design.price)} | {" "} {design.measurements}  | {" "} 
+                  {Array.isArray(design.categories) ? design.categories.join(", ") : "N/A"}
+{/* 
+                  {Array.isArray(design.imageUrls) && design.imageUrls.length > 0 && (
+  <Box component="span" sx={{ ml: 1, display: "flex", gap: 1, alignItems: "center" }}>
+    {design.imageUrls.map((url, i) => (
+      <img
+        key={i}
+        src={url}
+        alt={`${design.name} image ${i + 1}`}
+        style={{
+          maxHeight: "50px",
+          maxWidth: "50px",
+          objectFit: "contain",
+          borderRadius: "4px",
+          border: "1px solid #ccc",
+        }}
+      />
+    ))}
+  </Box>
+)} */}
+
+
+
+
+
+
+                        </Typography>
+ 
                         <Button
                           size="small"
                           variant="text"
@@ -668,7 +772,9 @@ const HandbagSearch = () => {
                         >
                           Edit
                         </Button>
+                        </Box>
                       </>
+                     
                     )}
                   </Box>
                 ))}
@@ -676,6 +782,7 @@ const HandbagSearch = () => {
             ))
           )}
         </Box>
+          
       </Box>
     </Box>
   );

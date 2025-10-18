@@ -431,60 +431,60 @@ const Handbags = () => {
         return (
           <Box key={h.id}>
 
- INSERT INTO Collection VALUES('{toLowerCaseFormat(h.name.concat("_",h.season))|| "NULL"}','{h.name || "NULL"}','{h.season || "NULL"}','{h.year || "NULL"}','{h.series || "NULL"}','{h.edition || 'NULL'}','{h.releaseDate|| "NULL"}',{h.inLookbook|| 'false'}, [ '{(Array.isArray(h.variations?.theme) ? h.variations.theme : []).join("',' ") || ""}']);
-            {/* <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}> */}
-              {/* <Typography variant="h6">
+ 
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Typography variant="h6">
               {h.name} {h.favourite && "⭐"}
-            </Typography> */}
-              {/* <Box>
+            </Typography>
+              <Box>
                 <Button onClick={() => toggleHandbagFavourite(h)} sx={{ mr: 1 }}>
                   {h.favourite ? "Unfavourite" : "Favourite"}
                 </Button>
                 <Button variant="outlined" onClick={() => startEdit(h)}>
                   Edit
                 </Button>
-              </Box> */}
-            {/* </Box> */}
+              </Box>
+            </Box>
 
 
 
-            {/* <Typography variant="body2">
+            <Typography variant="body2">
               id:  {h.id || "N/A"} | handbagId:  {h.handbagId || "N/A"} | Year: {h.year || "N/A"} | Season: {h.season || "N/A"} | Range: {" "}  {Array.isArray(h.range) ? h.range.join(", ") : "N/A"}  | Release Date:{" "}
               {h.releaseDate ? new Date(h.releaseDate).toLocaleDateString() : "N/A"}
               | Series:{h.series || "N/A"}
               | Edition:{h.edition || "N/A"}
 
-            </Typography> */}
-            {/* <Typography variant="body2"> */}
-              {/* Colors: {(Array.isArray(h.variations?.color) ? h.variations.color : []).join(", ") || "N/A"} | Sizes:{" "}
-            {(Array.isArray(h.variations?.size) ? h.variations.size : []).join(", ") || "N/A"} | Themes:{" "} */}
-              {/* {(Array.isArray(h.variations?.theme) ? h.variations.theme : []).join(", ") || "N/A"} */}
-              {/* | Version: {h.variations?.version || "N/A"} */}
-            {/* </Typography> */}
-            {/* <Typography variant="body2">Description: {h.description || "N/A"}</Typography> */}
-            {/*
+            </Typography>
+            <Typography variant="body2">
+              Colors: {(Array.isArray(h.variations?.color) ? h.variations.color : []).join(", ") || "N/A"} | Sizes:{" "}
+            {(Array.isArray(h.variations?.size) ? h.variations.size : []).join(", ") || "N/A"} | Themes:{" "}
+              {(Array.isArray(h.variations?.theme) ? h.variations.theme : []).join(", ") || "N/A"}
+              | Version: {h.variations?.version || "N/A"}
+            </Typography>
+            <Typography variant="body2">Description: {h.description || "N/A"}</Typography>
+            
                       {h.imageUrl && (
                         <Box sx={{ my: 1 }}>
                           <img src={h.imageUrl} alt={h.name} style={{ maxWidth: "200px" }} />
                         </Box>
-                      )} */}
+                      )}
 
-            {/* {h.video && (
+            {h.video && (
               <Box sx={{ my: 1 }}>
                 <a href={h.video} target="_blank" rel="noopener noreferrer">
                   Video Link
                 </a>
               </Box>
-            )} */}
+            )}
 
-            {/* <Typography variant="subtitle1" sx={{ mt: 1 }}>
+            <Typography variant="subtitle1" sx={{ mt: 1 }}>
               Designs:
-            </Typography> */}
+            </Typography>
 
             {Array.isArray(h.variations?.design) && h.variations.design.length > 0 ? (
               h.variations.design.map((design, idx) => (
                 <Box key={idx} >
-                  {/* <Button
+                  <Button
                           onClick={() => toggleDesignFavourite(h.id, idx)}
                           color={design.favourite ? "primary" : "default"}
                           aria-label={design.favourite ? "Unfavourite design" : "Favourite design"}
@@ -492,14 +492,14 @@ const Handbags = () => {
                           sx={{ mr: 1, minWidth: 0, p: 0.5 }}
                         >
                           {design.favourite ? <StarIcon /> : <StarBorderIcon />}
-                        </Button> */}
-                  {/* <b>{design.name || "N/A"} </b> |  */}
-                  {/* {design.shape || "N/A"} | Price:{" "}  */}
-                  {/* {gbpFormatter.format(design.price)} | Measurements: {design.measurements || "N/A"} | Categories:{" "}  */}
-                  {/* {Array.isArray(design.categories) ? design.categories.join(", ") : "N/A"} */}
+                        </Button> 
+                  <b>{design.name || "N/A"} </b> | 
+                  {design.shape || "N/A"} | Price:{" "} 
+                  {gbpFormatter.format(design.price)} | Measurements: {design.measurements || "N/A"} | Categories:{" "} 
+                  {Array.isArray(design.categories) ? design.categories.join(", ") : "N/A"}
 
-                  {/* Render all design images as small thumbnails */}
-                  {/* {Array.isArray(design.imageUrls) && design.imageUrls.length > 0 && (
+                   {/* Render all design images as small thumbnails */}
+                   {Array.isArray(design.imageUrls) && design.imageUrls.length > 0 && (
                           <Box component="span" sx={{ ml: 1, display: "flex", gap: 1, alignItems: "left" }}>
                             {design.imageUrls.map((url, i) => (
                               <img
@@ -510,7 +510,7 @@ const Handbags = () => {
                               />
                             ))}
                           </Box>
-                        )} */}
+                        )}
                 </Box>
               ))
             ) : (
