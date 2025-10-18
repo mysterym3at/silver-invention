@@ -9,7 +9,7 @@
     "@mui/material": "^7.3.2",
     "axios": "^1.11.0",
     "dotenv": "^17.2.1",
-    "firebase": "^9.0.0",
+    "firebase": "^12.4.0",
     "firebase-admin": "^13.4.0",
     "form-data": "^4.0.4",
     "fs": "^0.0.1-security",
@@ -47,7 +47,6 @@
       "last 1 safari version"
     ]
   },
-
   "devDependencies": {
     "@testing-library/jest-dom": "^6.8.0",
     "react-scripts": "^5.0.1",

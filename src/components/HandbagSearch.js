@@ -1,15 +1,71 @@
 import React, { useEffect, useState } from "react";
+import {
+  Box,
+  TextField,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Button,
+  Autocomplete,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HandbagService from "../services/handbagService";
+
+const categoryOptions = [
+  "Tote",
+  "Satchel",
+  "Clutch",
+  "Crossbody",
+  "Shoulder",
+  "Mini",
+  "Backpack",
+  "Handbag",
+  "Wallet",
+  "Purse",
+  "Accessory",
+];
 
 const HandbagSearch = () => {
   const [handbags, setHandbags] = useState([]);
   const [filteredHandbags, setFilteredHandbags] = useState([]);
-
-
-  
-  // Single combined search input
   const [searchTerm, setSearchTerm] = useState("");
-  
+  const [selectedCollections, setSelectedCollections] = useState(new Set());
+  const [selectedHandbags, setSelectedHandbags] = useState(new Set());
+
+  // Handbag editing state
+  const [editingHandbagId, setEditingHandbagId] = useState(null);
+  const [editingHandbagName, setEditingHandbagName] = useState("");
+  const [editingSeason, setEditingSeason] = useState("");
+  const [editingRange, setEditingRange] = useState("");
+  const [editingReleaseDate, setEditingReleaseDate] = useState("");
+  const [editingImageUrl, setEditingImageUrl] = useState("");
+  const [editingDescription, setEditingDescription] = useState("");
+  const [editingVideo, setEditingVideo] = useState("");
+  const [editingPin, setEditingPin] = useState("");
+  const [editingInLookbook, setEditingInLookbook] = useState(false);
+  const [editingSeries, setEditingSeries] = useState("");
+  const [editingEdition, setEditingEdition] = useState("");
+  const [editingYear, setEditingYear] = useState("");
+  const [editingHandbagIdField, setEditingHandbagIdField] = useState("");
+
+  // Design editing state
+  const [editingDesignId, setEditingDesignId] = useState(null);
+  const [editingDesignName, setEditingDesignName] = useState("");
+  const [editingDesignShape, setEditingDesignShape] = useState("");
+  const [editingDesignMeasurements, setEditingDesignMeasurements] = useState("");
+  const [editingDesignProductInfo, setEditingDesignProductInfo] = useState("");
+  const [editingDesignDesignId, setEditingDesignDesignId] = useState("");
+  const [editingDesignPrice, setEditingDesignPrice] = useState("");
+  const [editingDesignCategories, setEditingDesignCategories] = useState([]);
+  const [editingDesignImageUrls, setEditingDesignImageUrls] = useState([]);
+  const [editingDesignFavourite, setEditingDesignFavourite] = useState(false);
+  const [editingDesignParentHandbagId, setEditingDesignParentHandbagId] =
+    useState(null);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -18,7 +74,10 @@ const HandbagSearch = () => {
           ...h,
           variations: {
             ...h.variations,
-            design: (h.variations?.design || []).map((d) => ({ ...d, favourite: false })),
+            design: (h.variations?.design || []).map((d) => ({
+              ...d,
+              favourite: false,
+            })),
           },
         }));
         setHandbags(dataWithFav);
@@ -29,162 +88,596 @@ const HandbagSearch = () => {
     }
     fetchData();
   }, []);
-  
-useEffect(() => {
-  const term = searchTerm.trim().toLowerCase();
 
-  if (!term) {
-    // Show all handbags and all designs when search is empty, sorted by releaseDate
-    const sorted = [...handbags].sort((a, b) => {
+  const collections = React.useMemo(() => {
+    const set = new Set();
+    handbags.forEach((h) => {
+      (h.variations?.design || []).forEach((d) => {
+        if (d.collection) set.add(d.collection);
+      });
+    });
+    return Array.from(set).sort();
+  }, [handbags]);
+
+  // Editing handlers for handbags
+  const startEditHandbag = (handbag) => {
+    setEditingHandbagId(handbag.id);
+    setEditingHandbagName(handbag.name || "");
+    setEditingSeason(handbag.season || "");
+    setEditingRange(handbag.range || "");
+    setEditingReleaseDate(handbag.releaseDate || "");
+    setEditingImageUrl(handbag.imageUrl || "");
+    setEditingDescription(handbag.description || "");
+    setEditingVideo(handbag.video || "");
+    setEditingPin(handbag.pin || "");
+    setEditingInLookbook(handbag.inLookbook || false);
+    setEditingSeries(handbag.series || "");
+    setEditingEdition(handbag.edition || "");
+    setEditingYear(handbag.year || "");
+    setEditingHandbagIdField(handbag.handbagId || "");
+  };
+
+  const cancelEditHandbag = () => {
+    setEditingHandbagId(null);
+    setEditingHandbagName("");
+    setEditingSeason("");
+    setEditingRange("");
+    setEditingReleaseDate("");
+    setEditingImageUrl("");
+    setEditingDescription("");
+    setEditingVideo("");
+    setEditingPin("");
+    setEditingInLookbook(false);
+    setEditingSeries("");
+    setEditingEdition("");
+    setEditingYear("");
+    setEditingHandbagIdField("");
+  };
+
+  const saveEditHandbag = async () => {
+    try {
+      const updatedHandbag = {
+        id: editingHandbagId,
+        name: editingHandbagName,
+        season: editingSeason,
+        range: editingRange,
+        releaseDate: editingReleaseDate,
+        imageUrl: editingImageUrl,
+        description: editingDescription,
+        video: editingVideo,
+        pin: editingPin,
+        inLookbook: editingInLookbook,
+        series: editingSeries,
+        edition: editingEdition,
+        year: editingYear,
+        handbagId: editingHandbagIdField,
+      };
+      await HandbagService.updateHandbag(updatedHandbag);
+      setHandbags((prev) =>
+        prev.map((h) =>
+          h.id === editingHandbagId ? { ...h, ...updatedHandbag } : h
+        )
+      );
+      cancelEditHandbag();
+    } catch (error) {
+      console.error("Failed to update handbag", error);
+    }
+  };
+
+  // Editing handlers for designs
+  const startEditDesign = (design, parentHandbagId) => {
+    setEditingDesignId(design.name);
+    setEditingDesignName(design.name || "");
+    setEditingDesignShape(design.shape || "");
+    setEditingDesignMeasurements(design.measurements || "");
+    setEditingDesignProductInfo(design.productInfo || "");
+    setEditingDesignDesignId(design.designId || "");
+    setEditingDesignPrice(design.price || "");
+    setEditingDesignCategories(design.categories || []);
+    setEditingDesignImageUrls(design.imageUrls || []);
+    setEditingDesignFavourite(design.favourite || false);
+    setEditingDesignParentHandbagId(parentHandbagId);
+  };
+
+  const cancelEditDesign = () => {
+    setEditingDesignId(null);
+    setEditingDesignName("");
+    setEditingDesignShape("");
+    setEditingDesignMeasurements("");
+    setEditingDesignProductInfo("");
+    setEditingDesignDesignId("");
+    setEditingDesignPrice("");
+    setEditingDesignCategories([]);
+    setEditingDesignImageUrls([]);
+    setEditingDesignFavourite(false);
+    setEditingDesignParentHandbagId(null);
+  };
+
+  const saveEditDesign = async () => {
+    try {
+      setHandbags((prev) =>
+        prev.map((h) => {
+          if (h.id === editingDesignParentHandbagId) {
+            const updatedDesigns = h.variations.design.map((d) =>
+              d.name === editingDesignId
+                ? {
+                    ...d,
+                    name: editingDesignName,
+                    shape: editingDesignShape,
+                    measurements: editingDesignMeasurements,
+                    productInfo: editingDesignProductInfo,
+                    designId: editingDesignDesignId,
+                    price: editingDesignPrice,
+                    categories: editingDesignCategories,
+                    imageUrls: editingDesignImageUrls,
+                    favourite: editingDesignFavourite,
+                  }
+                : d
+            );
+            const updatedHandbag = {
+              ...h,
+              variations: { ...h.variations, design: updatedDesigns },
+            };
+            HandbagService.updateHandbag(updatedHandbag).catch(console.error);
+            return updatedHandbag;
+          }
+          return h;
+        })
+      );
+      cancelEditDesign();
+    } catch (error) {
+      console.error("Failed to update design", error);
+    }
+  };
+
+  const toggleHandbagSelection = (handbagId) => {
+    setSelectedHandbags((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(handbagId)) newSet.delete(handbagId);
+      else newSet.add(handbagId);
+      return newSet;
+    });
+  };
+
+  const toggleCollection = (collection) => {
+    setSelectedCollections((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(collection)) newSet.delete(collection);
+      else newSet.add(collection);
+      return newSet;
+    });
+  };
+
+  useEffect(() => {
+    const term = searchTerm.trim().toLowerCase();
+
+    const filtered = handbags
+      .map((h) => {
+        const filteredDesigns = (h.variations?.design || []).filter((d) => {
+          const nameMatch =
+            typeof d.name === "string" && d.name.toLowerCase().includes(term);
+
+          const catField = d.category || d.categories || "";
+          const categories = Array.isArray(catField)
+            ? catField
+            : typeof catField === "string"
+            ? catField.split(/[,/]/).map((c) => c.trim())
+            : [];
+
+          const catMatch = categories.some(
+            (c) => c && c.toLowerCase().includes(term)
+          );
+
+          const collectionMatch =
+            selectedCollections.size === 0 ||
+            (d.collection && selectedCollections.has(d.collection));
+
+          return (nameMatch || catMatch) && collectionMatch;
+        });
+
+        if (filteredDesigns.length > 0) {
+          return { ...h, variations: { ...h.variations, design: filteredDesigns } };
+        }
+        return null;
+      })
+      .filter(Boolean);
+
+    const finalFiltered = selectedHandbags.size
+      ? filtered.filter((h) => selectedHandbags.has(h.id))
+      : filtered;
+
+    finalFiltered.sort((a, b) => {
       const dateA = a.releaseDate ? new Date(a.releaseDate) : new Date(0);
       const dateB = b.releaseDate ? new Date(b.releaseDate) : new Date(0);
       return dateB - dateA;
     });
-    setFilteredHandbags(sorted.map(h => ({
-      ...h,
-      variations: {
-        ...h.variations,
-        design: [...(h.variations?.design || [])]
-      }
-    })));
-    return;
-  }
 
-  // Filter handbags by matching designs only
-  const result = handbags
-    .map((h) => {
-      // Filter the designs array for this handbag
-      const filteredDesigns = (h.variations?.design || []).filter(d => {
-        const nameMatch = typeof d.name === "string" && d.name.toLowerCase().includes(term);
-        const shapeMatch = typeof d.shape === "string" && d.shape.toLowerCase().includes(term);
+    setFilteredHandbags(finalFiltered);
+  }, [searchTerm, handbags, selectedCollections, selectedHandbags]);
 
-        // Handle category as string, array, or undefined
-        const catField = d.category || d.categories || "";
-        const categories = Array.isArray(catField)
-          ? catField
-          : typeof catField === "string"
-            ? catField.split(/[,/]/).map(c => c.trim())
-            : [];
-        const catMatch = categories.some(c => c && c.toLowerCase().includes(term));
-
-        return nameMatch || shapeMatch || catMatch;
-      });
-
-      // Return handbag only if at least one design matches
-      if (filteredDesigns.length > 0) {
-        return {
-          ...h,
-          variations: {
-            ...h.variations,
-            design: filteredDesigns
-          }
-        };
-      }
-      return null;
-    })
-    .filter(Boolean);
-
-  // Sort by releaseDate descending (newest first)
-  result.sort((a, b) => {
-    const dateA = a.releaseDate ? new Date(a.releaseDate) : new Date(0);
-    const dateB = b.releaseDate ? new Date(b.releaseDate) : new Date(0);
-    return dateB - dateA;
-  });
-
-  setFilteredHandbags(result);
-}, [searchTerm, handbags]);
-
-
-  // Toggle favorite status of a design locally
-  const toggleDesignFavourite = (handbagId, designName) => {
-    setHandbags((prevHandbags) =>
-      prevHandbags.map((handbag) => {
-        if (handbag.id !== handbagId) return handbag;
-        const updatedDesigns = (handbag.variations?.design || []).map((design) =>
-          design.name === designName ? { ...design, favourite: !design.favourite } : design
-        );
-        return {
-          ...handbag,
-          variations: {
-            ...handbag.variations,
-            design: updatedDesigns,
-          },
-        };
-      })
-    );
-  };
-
-  // EmailFavoritesButton component omitted for brevity (same as before)
+  const handbagsBySeason = React.useMemo(() => {
+    const group = {};
+    filteredHandbags.forEach((handbag) => {
+      const season = handbag.season || "Unknown Season";
+      if (!group[season]) group[season] = [];
+      group[season].push(handbag);
+    });
+    return group;
+  }, [filteredHandbags]);
 
   return (
-    <div style={{ maxWidth: 800, margin: "auto", padding: 20, fontFamily: "Arial, sans-serif" }}>
-      <h2>Search Handbags & Designs</h2>
+    <Box sx={{ padding: 2 }}>
+      <Box sx={{ marginBottom: 2 }}>
+        <TextField
+          fullWidth
+          label="Search handbags or designs..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Box>
 
-      <input
-        type="text"
-        placeholder="Search by handbag name, design, shape, range, colors, or season..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ width: "100%", padding: 8, marginBottom: 20, fontSize: 16 }}
-        aria-label="Search handbags and designs"
-        autoFocus
-      />
+      <Box sx={{ display: "flex" }}>
+        <Box
+          sx={{
+            width: 300,
+            flexShrink: 0,
+            borderRight: "1px solid #ddd",
+            paddingRight: 2,
+          }}
+        >
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{ marginBottom: 1 }}
+            onClick={() => {
+              setSelectedCollections(new Set());
+              setSelectedHandbags(new Set());
+            }}
+          >
+            Clear Filters
+          </Button>
 
-      {/* EmailFavoritesButton handbags={handbags} here */}
+          {/* <h3>Filter by Collection</h3>
+          <FormGroup>
+            {collections.length === 0 && <p>No collections found</p>}
+            {collections.map((col) => (
+              <FormControlLabel
+                key={col}
+                control={
+                  <Checkbox
+                    checked={selectedCollections.has(col)}
+                    onChange={() => toggleCollection(col)}
+                  />
+                }
+                label={col}
+              />
+            ))}
+          </FormGroup> */}
 
-      {/* Render filtered handbags and designs as before */}
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {filteredHandbags.length === 0 && <p>No results found.</p>}
-
-        {filteredHandbags.map((handbag) => (
-          <li key={handbag.id} style={{ marginBottom: 30, padding: 15, border: "1px solid #ccc", borderRadius: 6, backgroundColor: "#fafafa" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", marginBottom: 10 }}>
-              <h3 style={{ margin: 0 }}>{handbag.name}</h3>
-              <div>
-                <em>{handbag.range || "N/A"}</em> | <span>{handbag.season || "N/A"}</span> | <span>{handbag.releaseDate || "N/A"}</span>
-              </div>
-            </div>
-
-            <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-              {(handbag.variations?.design || []).map((design) => (
-                <li key={design.name} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                  <button
-                    type="button"
-                    onClick={() => toggleDesignFavourite(handbag.id, design.name)}
-                    aria-label={design.favourite ? "Unfavourite design" : "Favourite design"}
-                    title={design.favourite ? "Unfavourite design" : "Favourite design"}
-                    style={{
-                      background: "none",
-                      border: "none",
+          <h3>Handbags by Season</h3>
+          {Object.entries(handbagsBySeason).map(([season, handbagsInSeason]) => (
+            <Accordion key={season}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>
+                  {season} ({handbagsInSeason.length})
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {handbagsInSeason.map((handbag) => (
+                  <Typography
+                    key={handbag.id}
+                    sx={{
                       cursor: "pointer",
-                      fontSize: 22,
-                      color: design.favourite ? "gold" : "#ccc",
+                      paddingLeft: 1,
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
                       userSelect: "none",
-                      padding: 0,
+                      bgcolor: selectedHandbags.has(handbag.id)
+                        ? "action.selected"
+                        : "transparent",
+                      borderRadius: 1,
+                      "&:hover": { textDecoration: "underline" },
                     }}
+                    onClick={() => toggleHandbagSelection(handbag.id)}
+                    title={handbag.name}
                   >
-                    {design.favourite ? "★" : "☆"}
-                  </button>
+                    {handbag.name}
+                  </Typography>
+                ))}
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
 
-                  {design.imageUrl && (
-                    <img
-                      src={design.imageUrl}
-                      alt={design.name}
-                      style={{ width: 120, objectFit: "cover", borderRadius: 4 }}
+        <Box sx={{ flexGrow: 1, paddingLeft: 2 }}>
+          {filteredHandbags.length === 0 ? (
+            <p>No results found.</p>
+          ) : (
+            filteredHandbags.map((handbag) => (
+              <Box key={handbag.id} sx={{ mb: 3 }}>
+                {editingHandbagId === handbag.id ? (
+                  <>
+                    <TextField
+                      label="Name"
+                      value={editingHandbagName}
+                      onChange={(e) => setEditingHandbagName(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
                     />
-                  )}
+                    <TextField
+                      label="Season"
+                      value={editingSeason}
+                      onChange={(e) => setEditingSeason(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Range"
+                      value={editingRange}
+                      onChange={(e) => setEditingRange(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Release Date"
+                      value={editingReleaseDate}
+                      onChange={(e) => setEditingReleaseDate(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      type="date"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                    <TextField
+                      label="Image URL"
+                      value={editingImageUrl}
+                      onChange={(e) => setEditingImageUrl(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Description"
+                      value={editingDescription}
+                      onChange={(e) => setEditingDescription(e.target.value)}
+                      size="small"
+                      fullWidth
+                      multiline
+                      rows={3}
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Video URL"
+                      value={editingVideo}
+                      onChange={(e) => setEditingVideo(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Pin"
+                      value={editingPin}
+                      onChange={(e) => setEditingPin(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={editingInLookbook}
+                          onChange={(e) => setEditingInLookbook(e.target.checked)}
+                        />
+                      }
+                      label="In Lookbook"
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Series"
+                      value={editingSeries}
+                      onChange={(e) => setEditingSeries(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Edition"
+                      value={editingEdition}
+                      onChange={(e) => setEditingEdition(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    />
+                    <TextField
+                      label="Year"
+                      value={editingYear}
+                      onChange={(e) => setEditingYear(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      type="number"
+                    />
+                    <TextField
+                      label="Handbag Id"
+                      value={editingHandbagIdField}
+                      onChange={(e) => setEditingHandbagIdField(e.target.value)}
+                      size="small"
+                      fullWidth
+                      sx={{ mb: 2 }}
+                    />
 
-                  <div>
-                    <strong>{design.name || "Unnamed Design"}</strong>
-                    <div>Category: {Array.isArray(design.categories) ? design.categories.split : []} | Price: £{design.price ?? "0.00"}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </div>
+                    <Box sx={{ my: 1 }}>
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={saveEditHandbag}
+                        sx={{ mr: 1 }}
+                      >
+                        Save
+                      </Button>
+                      <Button size="small" onClick={cancelEditHandbag}>
+                        Cancel
+                      </Button>
+                    </Box>
+                  </>
+                ) : (
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography sx={{ flexGrow: 1, fontWeight: "bold" }}>
+                      {handbag.name}
+                    </Typography>
+                    <Button
+                      size="small"
+                      variant="text"
+                      onClick={() => startEditHandbag(handbag)}
+                    >
+                      Edit
+                    </Button>
+                  </Box>
+                )}
+
+                {(handbag.variations?.design || []).map((design) => (
+                  <Box
+                    key={design.name}
+                    sx={{ display: "flex", alignItems: "center", mt: 1 }}
+                  >
+                    {editingDesignId === design.name &&
+                    editingDesignParentHandbagId === handbag.id ? (
+                      <>
+                        <TextField
+                          label="Name"
+                          value={editingDesignName}
+                          onChange={(e) => setEditingDesignName(e.target.value)}
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                        />
+                        <TextField
+                          label="Shape"
+                          value={editingDesignShape}
+                          onChange={(e) => setEditingDesignShape(e.target.value)}
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                        />
+                        <TextField
+                          label="Measurements"
+                          value={editingDesignMeasurements}
+                          onChange={(e) =>
+                            setEditingDesignMeasurements(e.target.value)
+                          }
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                          multiline
+                          rows={2}
+                        />
+                        <TextField
+                          label="Product Info"
+                          value={editingDesignProductInfo}
+                          onChange={(e) =>
+                            setEditingDesignProductInfo(e.target.value)
+                          }
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                          multiline
+                          rows={2}
+                        />
+                        <TextField
+                          label="Design Id"
+                          value={editingDesignDesignId}
+                          onChange={(e) => setEditingDesignDesignId(e.target.value)}
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                        />
+                        <TextField
+                          label="Price"
+                          value={editingDesignPrice}
+                          onChange={(e) => setEditingDesignPrice(e.target.value)}
+                          size="small"
+                          sx={{ mr: 1, mb: 1 }}
+                          type="number"
+                        />
+                        <Autocomplete
+                          multiple
+                          freeSolo
+                          options={categoryOptions}
+                          value={editingDesignCategories}
+                          onChange={(event, newValue) =>
+                            setEditingDesignCategories(newValue)
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Categories"
+                              size="small"
+                              sx={{ mb: 1 }}
+                            />
+                          )}
+                          sx={{ mr: 1, width: 300 }}
+                        />
+                        <TextField
+                          label="Image URLs (comma separated)"
+                          value={editingDesignImageUrls.join(", ")}
+                          onChange={(e) =>
+                            setEditingDesignImageUrls(e.target.value.split(/\s*,\s*/))
+                          }
+                          multiline
+                          rows={2}
+                          size="small"
+                          fullWidth
+                          sx={{ mb: 1 }}
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={editingDesignFavourite}
+                              onChange={(e) =>
+                                setEditingDesignFavourite(e.target.checked)
+                              }
+                            />
+                          }
+                          label="Favourite"
+                          sx={{ mb: 1 }}
+                        />
+
+                        <Box sx={{ my: 1 }}>
+                          <Button
+                            variant="contained"
+                            size="small"
+                            onClick={saveEditDesign}
+                            sx={{ mr: 1 }}
+                          >
+                            Save
+                          </Button>
+                          <Button size="small" onClick={cancelEditDesign}>
+                            Cancel
+                          </Button>
+                        </Box>
+                      </>
+                    ) : (
+                      <>
+                        <Typography sx={{ flexGrow: 1 }}>
+                          <strong>{design.name}</strong> - Collection: {design.collection}
+                        </Typography>
+
+                        <Button
+                          size="small"
+                          variant="text"
+                          onClick={() => startEditDesign(design, handbag.id)}
+                        >
+                          Edit
+                        </Button>
+                      </>
+                    )}
+                  </Box>
+                ))}
+              </Box>
+            ))
+          )}
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
