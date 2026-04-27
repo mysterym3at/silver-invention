@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import HandbagService from "../services/designService";
+import HandbagService from "../services/designService.js";
 
 const HandbagSearch = () => {
   const [handbags, setHandbags] = useState([]);

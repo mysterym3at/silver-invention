@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, getDoc } from "firebase/firestore";
-import { db } from "../firebase"; // adjust path to your firebase config
+import { db } from "../firebase.js"; // adjust path to your firebase config
 
 const HandbagsJsonViewer = () => {
   const [jsonData, setJsonData] = useState(null);

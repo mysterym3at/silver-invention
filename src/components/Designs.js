@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DesignService from "../services/designService";
+import DesignService from "../services/designService.js";
 import { Box } from "@mui/material";
 
 const styles = {

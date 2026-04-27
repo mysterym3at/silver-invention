@@ -1,7 +1,7 @@
 import React from "react";
 import { collection, doc, writeBatch } from "firebase/firestore";
-import { db } from "../firebase";
-import colorJson from "../services/colorJson";
+import { db } from "../firebase.js";
+import colorJson from "../services/colorJson.js";
 
 const AddOrUpdateColorsButton = () => {
   const addOrUpdateColors = async () => {

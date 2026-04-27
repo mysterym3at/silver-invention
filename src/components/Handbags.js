@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import HandbagService from "../services/handbagService";
+import HandbagService from "../services/handbagService.js";
 import {
   TextField,
   Button,
@@ -91,7 +91,11 @@ const Handbags = () => {
   const [editingId, setEditingId] = useState(null);
   const [editingIdFavourite, setEditingIdFavourite] = useState(false);
 
+  // Add these to your useEffect in Handbags.js
+
+
   useEffect(() => {
+
     fetchHandbags();
   }, []);
 

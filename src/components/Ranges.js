@@ -1,6 +1,6 @@
 // src/components/Ranges.jsx
 import React, { useState, useEffect } from "react";
-import RangeService from "../services/rangeService"; // Implement Firestore service accordingly
+import RangeService from "../services/rangeService.js"; // Implement Firestore service accordingly
 import { Box } from "@mui/material";
 
 const emptyRange = {

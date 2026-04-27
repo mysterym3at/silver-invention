@@ -1,7 +1,7 @@
 import React from "react";
 import { collection, doc, writeBatch } from "firebase/firestore";
-import { db } from "../firebase";
-import designJson from "../services/designJson";
+import { db } from "../firebase.js";
+import designJson from "../services/designJson.js";
 
 const AddOrUpdateDesignsButton = () => {
   const addOrUpdateDesigns = async () => {

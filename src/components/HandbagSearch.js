@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CircleIcon from '@mui/icons-material/Circle';
-import HandbagService from "../services/handbagService";
+import HandbagService from "../services/handbagService.js";
 
 const categoryOptions = [
   "Tote",

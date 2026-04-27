@@ -3,20 +3,20 @@
 // App.js
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import AddHandbagButton from "./components/AddHandbagButton";
-import HandbagsJsonViewer from "./components/HandbagsJsonViewer";
-import DesignsJsonViewer from "./components/DesignsJsonViewer";
-import Handbags from "./components/Handbags";           // your admin CRUD page
-import HandbagSearch from "./components/HandbagSearch"; 
-import AddOrUpdateHandbagsButton from "./components/AddOrUpdateHandbagsButton"; 
-import AddOrUpdateShapesButton from "./components/AddOrUpdateShapesButton"; 
-import AddOrUpdateDesignsButton from "./components/AddOrUpdateDesignsButton";
-// import AddOrUpdateColorsButton from "./components/AddOrUpdateColorsButton";
-import AddOrUpdateRangesButton from "./components/AddOrUpdateRangesButton";
-import Shapes from "./components/Shapes";
-import Designs from "./components/Designs";
-import HBDesigns from "./components/HBDesigns";
-import Ranges from "./components/Ranges";
+import AddHandbagButton from "./components/AddHandbagButton.js";
+import HandbagsJsonViewer from "./components/HandbagsJsonViewer.js";
+import DesignsJsonViewer from "./components/DesignsJsonViewer.js";
+import Handbags from "./components/Handbags.js";           // your admin CRUD page
+import HandbagSearch from "./components/HandbagSearch.js"; 
+import AddOrUpdateHandbagsButton from "./components/AddOrUpdateHandbagsButton.js"; 
+import AddOrUpdateShapesButton from "./components/AddOrUpdateShapesButton.js"; 
+import AddOrUpdateDesignsButton from "./components/AddOrUpdateDesignsButton.js";
+import AddOrUpdateColorsButton from "./components/AddOrUpdateColorsButton.js";
+import AddOrUpdateRangesButton from "./components/AddOrUpdateRangesButton.js";
+import Shapes from "./components/Shapes.js";
+import Designs from "./components/Designs.js";
+import HBDesigns from "./components/HBDesigns.js";
+import Ranges from "./components/Ranges.js";
 
 
 
@@ -45,7 +45,7 @@ const App = () => {
           <h6 style={{ marginBottom:20, textDecoration: "none" }}>Admin
             </h6> <hr></hr>
 
-          <li style={{marginBottom:5 }}> <Link to="/admin/handbags/addupdate/form"  style={{ paddingBottom:20, textDecoration: "none" }}>FORM: Add Update Handbags</Link></li>
+          <li style={{marginBottom:5 }}> <Link to="/"  style={{ paddingBottom:20, textDecoration: "none" }}>FORM: Add Update Handbags</Link></li>
 
           <li style={{marginBottom:5 }}> <Link to="/admin/handbags/addupdate/json"  style={{marginTop:20, textDecoration: "none" }}>JSON: Add Update Handbags</Link></li>
 
@@ -61,13 +61,13 @@ const App = () => {
          <div style={{alignItems:"center" ,width:300, marginRight: 20, marginTop:20 }}>
            <h5 style={{alignItems:"center" }}>Designs</h5> <hr></hr>
         <ul>
-          {/* <li style={{marginBottom:20 }}>
+          <li style={{marginBottom:20 }}>
 
    <Link to="/handbags/search" style={{marginBottom:50, textDecoration: "none" }}>
          Search - Handbags
         </Link>
 
-</li> */}
+</li>
           <h6 style={{ marginBottom:20, textDecoration: "none" }}>Admin
             </h6> <hr></hr>
 
@@ -103,7 +103,7 @@ const App = () => {
 
       {/* Define routes */}
       <Routes>
-         <Route path="/admin/hbdesigns/addupdate/form" element={<HBDesigns />} />
+         <Route path="/admin/hbdesigns/addupdate/form" element={<HBDesigns />} /> 
         <Route path="/admin/handbags/addupdate/form" element={<Handbags />} />
          <Route path="/admin/handbags/addupdate/form" element={<Handbags />} />
         

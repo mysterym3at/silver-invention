@@ -1,6 +1,76 @@
 
 # mysterym3at.github.io
 
+#  Cloudflare DB 
+
+
+## Schema:
+### Applying the Schema
+Apply to local:
+
+`cd api`
+`npx wrangler d1 execute vendula_bags_db --local --file=schema.sql`
+
+Apply to remote:
+
+`npx wrangler d1 execute vendula_bags_db --remote --file=schema.sql`
+
+## Get Production Backup
+
+Export from Production
+`npm run backup`
+
+## SYNC to prod
+
+Export from Production
+`npx wrangler d1 export "vendula-bags-db" --remote --output=production_backup.sql`
+
+Import to local
+`npx wrangler d1 execute "vendula-bags-db" --local --file=production_backup.sql`
+
+## Update Table Config Schema
+### Add Columns
+
+### Delete Columns
+
+### Update Columns
+
+## Update/Launch DB Tables Changes - API 
+
+### Update
+
+
+
+### Insert
+
+
+### Delete
+
+## Clear SQL Files
+
+### Individually
+`> api/sql/{TABLE}/{FILE}`
+
+### By REST Type
+
+### By TABLE
+
+
+### All 
+`npm run clear-sql`
+
+## 
+
+`npx wrangler d1 execute "vendula-bags-db" --local --file=production_backup.sql`
+
+
+## Deploy after Changes: Whenever you update wrangler.toml, you must re-deploy your worker for the new bindings to take effect on the production network:
+
+Run this from the api/ folder
+`npx wrangler deploy`
+
+Local Development: When running npx wrangler dev, Wrangler automatically reads this wrangler.toml and maps your local D1 SQLite database to the DB binding, allowing you to test exactly as it will run in production.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

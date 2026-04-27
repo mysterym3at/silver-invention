@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Combined schema for handbags-export-20.json",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "categories": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "description": {
+        "type": "string"
+      },
+      "edition": {
+        "type": "string"
+      },
+      "favorite": {
+        "type": "boolean"
+      },
+      "favourite": {
+        "type": "boolean"
+      },
+      "handbagId": {
+        "type": "string"
+      },
+      "id": {
+        "type": "string"
+      },
+      "imageURL": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "imageUrl": {
+        "type": "string"
+      },
+      "inLookbook": {
+        "type": "boolean"
+      },
+      "name": {
+        "type": "string"
+      },
+      "pin": {
+        "type": "string"
+      },
+      "range": {
+        "type": "string"
+      },
+      "releaseDate": {
+        "type": "string"
+      },
+      "season": {
+        "type": "string"
+      },
+      "series": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string"
+      },
+      "variations": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "design": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "categories": {
+                  "type": [
+                    "array",
+                    "string"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "category": {
+                  "type": [
+                    "array",
+                    "string"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "designId": {
+                  "type": "string"
+                },
+                "favourite": {
+                  "type": "boolean"
+                },
+                "imageUrl": {
+                  "type": "string"
+                },
+                "imageUrls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "measurements": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": [
+                    "integer",
+                    "number",
+                    "string"
+                  ]
+                },
+                "productInfo": {
+                  "type": "string"
+                },
+                "referencePath": {
+                  "type": "string"
+                },
+                "shape": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "size": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "theme": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "required": [
+          "color",
+          "design",
+          "size",
+          "theme"
+        ]
+      },
+      "video": {
+        "type": "string"
+      },
+      "year": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "favourite",
+      "name",
+      "season",
+      "variations"
+    ]
+  }
+}

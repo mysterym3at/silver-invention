@@ -1,7 +1,7 @@
 import React from "react";
 import { collection, doc, writeBatch } from "firebase/firestore";
-import { db } from "../firebase";
-import rangeJson from "../services/rangeJson";
+import { db } from "../firebase.js";
+import rangeJson from "../services/rangeJson.js";
 
 const AddOrUpdateRangesButton = () => {
   const addOrUpdateRanges = async () => {

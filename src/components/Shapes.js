@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ShapeService from "../services/shapeService";
+import ShapeService from "../services/shapeService.js";
 
 const styles = {
   container: {

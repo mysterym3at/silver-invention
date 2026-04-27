@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase"; // Adjust path to your firebase config
+import { db } from "../firebase.js"; // Adjust path to your firebase config
 
 const DesignsJsonViewer = () => {
   const [jsonData, setJsonData] = useState(null);

@@ -1,7 +1,7 @@
 import React from "react";
 import { collection, doc, writeBatch } from "firebase/firestore";
-import { db } from "../firebase";
-import shapeJson from "../services/shapeJson";
+import { db } from "../firebase.js";
+import shapeJson from "../services/shapeJson.js";
 
 const AddOrUpdateShapesButton = () => {
   const addOrUpdateShapes = async () => {
